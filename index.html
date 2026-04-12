@@ -549,55 +549,117 @@
   <div class="rsvp-form" id="rsvpForm">
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">1. Vorname</label>
-        <input type="text" class="form-input" id="fname" placeholder="Vorname">
+        <label class="form-label">1. Imię</label>
+        <input type="text" class="form-input" id="fname" placeholder="Imię">
       </div>
       <div class="form-group">
-        <label class="form-label">1. Nachname</label>
-        <input type="text" class="form-input" id="lname" placeholder="Nachname">
+        <label class="form-label">1. Nazwisko</label>
+        <input type="text" class="form-input" id="lname" placeholder="Nazwisko">
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">2. Vorname (optional)</label>
-        <input type="text" class="form-input" id="companion_fname" placeholder="Vorname">
+        <label class="form-label">2. Imię (optional)</label>
+        <input type="text" class="form-input" id="companion_fname" placeholder="Imię">
       </div>
       <div class="form-group">
-        <label class="form-label">2. Nachname (optional)</label>
-        <input type="text" class="form-input" id="companion_lname" placeholder="Nachname">
+        <label class="form-label">2. Nazwisko (optional)</label>
+        <input type="text" class="form-input" id="companion_lname" placeholder="Nazwisko">
       </div>
     </div>
 
     <div class="form-group">
-      <label class="form-label">Handynummer zur Authentication</label>
-      <input type="tel" class="form-input" id="phone" placeholder="+49 …">
+      <label class="form-label">Numer telefonu komórkowego do uwierzytelnienia</label>
+      <input type="tel" class="form-input" id="phone" placeholder="+48 …">
     </div>
 
     <div class="form-group">
-      <label class="form-label">Werdet ihr dabei sein?</label>
+      <label class="form-label">Czy będziecie przy tym obecni?</label>
       <div class="rsvp-options">
         <label class="rsvp-option" id="opt-yes">
-          <input type="radio" name="attending" value="yes"> ✓ Wir kommen!
+          <input type="radio" name="attending" value="yes"> ✓ Przyjedziemy!
         </label>
         <label class="rsvp-option" id="opt-no">
-          <input type="radio" name="attending" value="no"> ✗ Leider nicht
+          <input type="radio" name="attending" value="no"> ✗ Niestety nie
         </label>
       </div>
     </div>
 
     <div class="form-group">
-      <label class="form-label">Nachricht (optional)</label>
-      <textarea class="form-textarea" id="message" placeholder="Allergien, Anmerkungen…"></textarea>
+      <label class="form-label">Wiadomość (opcjonalnie)</label>
+      <textarea class="form-textarea" id="message" placeholder="Alergie, uwagi…"></textarea>
     </div>
 
-    <button class="submit-btn" onclick="submitRSVP()">Absenden →</button>
+    <button class="submit-btn" onclick="submitRSVP()">Wyślij →</button>
   </div>
 
   <div class="success-msg" id="successMsg">
-    🥂 Herzlichen Dank für eure Rückmeldung!<br>
-    Wir freuen uns sehr auf den Abend mit euch.
+    🥂 Serdecznie dziękujemy za waszą odpowiedź!<br>
+Bardzo cieszymy się na wieczór z wami.
   </div>
 </section>
 
- 
+ <!-- INFOS -->
+<section class="info-section">
+  <p class="section-label">Infos</p>
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-label">Location</div>
+      <div class="info-card-content">
+        <a href="https://www.google.com/maps/search/?api=1&query=DGH+Rennertehausen+Hauptstrasse+16+35108+Allendorf+Eder" target="_blank" style="color:inherit;text-decoration:none;">
+          DGH Rennertehausen<br>
+          Hauptstrasse 16<br>
+          35108 Allendorf Eder
+        </a>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Nasi świadkowie </p>Wasze osoby kontaktowe</div>
+      <div class="info-card-content">
+        Tatjana Martel<br>
+        0170 2297952<br><br>
+        Phillip Jugel<br>
+        0173 4027200
+      </div>
+    </div>
+   
+    <div class="info-card" style="grid-column: 1 / -1;">
+      <div class="info-card-label">Szczególnie korzystna możliwość noclegu</div>
+      <div class="info-card-content">
+        <strong>AE Hotel</strong><br>
+        Im Ried 15<br>
+        35108 Allendorf (Eder)<br>
+        <a href="https://ae-hotel.de" target="_blank">ae-hotel.de</a>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label"></div>
+      <div class="info-card-content">
+        Więcej informacji pojawi się tu później...<br>
+      </div>
+    </div>
+   
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <span>Kinga &amp; David</span> &nbsp;·&nbsp; 26. września 2026 &nbsp;·&nbsp; Allendorf Eder
+</footer>
+<script>
+  // RSVP radio styling
+  document.querySelectorAll('input[name="attending"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      document.getElementById('opt-yes').className = 'rsvp-option';
+      document.getElementById('opt-no').className = 'rsvp-option';
+      if (this.value === 'yes') document.getElementById('opt-yes').className = 'rsvp-option selected-yes';
+      else document.getElementById('opt-no').className = 'rsvp-option selected-no';
+    });
+  });
+  function submitRSVP() {
+    const fname = document.getElementById('fname').value.trim();
+    const lname = document.getElementById('lname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const attending = document.querySelector('input[name="attending"]:checked');
+    if (!fname || !lname) { alert('Proszę podać imię i nazwisko.'); return; }
+    if (!phone) { alert('Proszę podać numer telefonu
