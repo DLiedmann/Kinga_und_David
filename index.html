@@ -656,10 +656,53 @@ Bardzo cieszymy się na wieczór z wami.
       else document.getElementById('opt-no').className = 'rsvp-option selected-no';
     });
   });
+
   function submitRSVP() {
     const fname = document.getElementById('fname').value.trim();
     const lname = document.getElementById('lname').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const attending = document.querySelector('input[name="attending"]:checked');
-    if (!fname || !lname) { alert('Proszę podać imię i nazwisko.'); return; }
-    if (!phone) { alert('Proszę podać numer telefonu
+
+    if (!fname || !lname) { alert('Bitte 1. Vorname und 1. Nachname eingeben.'); return; }
+    if (!phone) { alert('Bitte Handynummer eingeben.'); return; }
+    if (!attending) { alert('Bitte Zu- oder Absage auswählen.'); return; }
+
+    const companion_fname = document.getElementById('companion_fname').value.trim();
+    const companion_lname = document.getElementById('companion_lname').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const attendingText = attending.value === 'yes' ? 'Wir kommen!' : 'Wir kommen leider nicht.';
+
+    // Korrekte entry-IDs aus dem Google-Formular-Quelltext:
+    // entry.1612616459 → 1. Vorname
+    // entry.1098433538 → 1. Nachname
+    // entry.1763955451 → Handynummer zur Authentication
+    // entry.679795412  → 2. Vorname (optional)
+    // entry.1521732201 → 2. Nachname (optional)
+    // entry.1961305574 → Werdet ihr dabei sein?
+    // entry.1122070835 → Nachricht (optional)
+
+    // Daten als URL-Parameter senden (funktioniert zuverlässig mit no-cors)
+    const params = new URLSearchParams({
+      fname,
+      lname,
+      companion_fname,
+      companion_lname,
+      phone,
+      attending: attendingText,
+      message
+    });
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxpVl9tyJZnIi9Eh_4hfrffyEbyRlUJYlAgkI9m-wmQNMQp3ShcqMpCtH6hmHPDt3kVkA/exec';
+
+    fetch(scriptUrl + '?' + params.toString(), {
+      method: 'GET',
+      mode: 'no-cors'
+    });
+
+    // Erfolgsmeldung anzeigen
+    document.getElementById('rsvpForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
